@@ -3,7 +3,6 @@
 const headerCityButton = document.querySelector('.header__city-button'); //селектор по классу
 
 
-//тернарный оператор , получаем данные из localStorage
 headerCityButton.textContent = localStorage.getItem('lomoda-location') || 'Ваш город';
 
 //добавляем слушатель событий
@@ -14,7 +13,7 @@ headerCityButton.addEventListener('click', () => {
 });
 
 
-//  БЛОКИРОВКА СК РОЛЛА
+//  БЛОКИРОВКА СКРОЛЛА
 
 // 1 способ 
 /*const disableScroll = () => {
@@ -69,6 +68,36 @@ const cartModalClose = () => {
     cartOverlay.classList.remove('cart-overlay-open');
     enableScroll();
 };
+
+
+
+// ЗАПРОС БАЗЫ ДАННЫХ
+
+const getData = async () => {
+    const data = await fetch('db.json');
+
+    if (data.ok) {
+        return data.json()
+    } else {
+        throw new Error(`Данные не были получены, ошибка ${data.status} ${data.statusText}`)
+    }
+};
+
+const getGoods = (callback) => {
+    getData()
+        .then(data => {
+            callback(data);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+
+getGoods((data) => {
+    console.warn(data);
+});
+
 
 subHeaderCart.addEventListener('click', cartModalOpen);
 
