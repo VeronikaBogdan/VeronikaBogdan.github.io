@@ -118,16 +118,21 @@ cartOverlay.addEventListener('click', event => {
 });
 
 
+
+//СТРАНИЦА ТОВАРОВ
 try {
 
-    console.log(hash);
-
     const goodsList = document.querySelector('.goods__list');
-    let goodsTitle = document.querySelector('.goods__title');
 
     if (!goodsList){
         throw `This is not a goods page`; //исключение
     }
+
+    const goodsTitle = document.querySelector('.goods__title');
+
+    const changeTitle = () => {
+        goodsTitle.textContent = document.querySelector(`[href*="#${hash}"]`).textContent;
+    };
 
     const createCard = ({ id, preview, cost, brand, name, sizes }) => {
 
@@ -163,27 +168,30 @@ try {
         });
     };
 
+
     window.addEventListener('hashchange', () => {
         hash = location.hash.substring(1);
 
+        /*let goodsTitle = document.querySelector('.goods__title');
         if (hash === 'women') {
             goodsTitle.textContent = 'Женщинам';
         } else if (hash === 'men') {
             goodsTitle.textContent = 'Мужчинам';
         } else if (hash === 'kids') {
             goodsTitle.textContent = 'Детям';
-        }
-
+        }*/
+        changeTitle();
         getGoods(renderGoodsList, hash);
     });
 
+    changeTitle();
     getGoods(renderGoodsList, hash);
-
-
-   
 
     //goodsTitle.textContent = localStorage.getItem('lomoda-location');
 
 } catch (err) {
     console.warn(err);
 }
+
+
+// СТРАНИЦА 
