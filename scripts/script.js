@@ -122,14 +122,18 @@ try {
         throw `This is not a goods page`; //исключение
     }
 
-    const createCard = data => {
+    const createCard = ({ id, preview, cost, brand, name, sizes }) => {
 
+        // 2ой способ переменные і свойтва
+        //const { id, preview, cost, brand, name, sizes } = data;
+
+        /*  1ый способ обозначения переменных объекта и свойств
         const id = data.id;
         const preview = data.preview;
         const cost = data.cost;
         const brand = data.brand;
         const name = data.name;
-        const sizes = data.sizes;
+        const sizes = data.sizes;*/
 
 
         const li = document.createElement('li');
@@ -144,7 +148,9 @@ try {
                 <div class="good__description">
                     <p class="good__price">${cost} &#8381;</p>
                     <h3 class="good__title">${brand} <span class="good__title__grey">/ ${name}</span></h3>
-                    <p class="good__sizes">Размеры (RUS): <span class="good__sizes-list">${sizes.join(' ')}</span></p>
+                    ${sizes ? 
+                        `<p class="good__sizes">Размеры (RUS): <span class="good__sizes-list">${sizes.join(' ')}</span></p>` : 
+                        ``}
                     <a class="good__link" href="card-good.html#${id}">Подробнее</a>
                 </div>
             </article>
