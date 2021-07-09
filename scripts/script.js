@@ -1,7 +1,7 @@
 
-
 const headerCityButton = document.querySelector('.header__city-button'); //селектор по классу
 
+let hash = location.hash.substring(1);
 
 headerCityButton.textContent = localStorage.getItem('lomoda-location') || 'Ваш город';
 
@@ -83,10 +83,14 @@ const getData = async () => {
     }
 };
 
-const getGoods = (callback) => {
+const getGoods = (callback, value) => {
     getData()
         .then(data => {
-            callback(data);
+            if (value) {
+                callback(data.filter(item => item.category === value));
+            } else {
+                callback(data);
+            }
         })
         .catch(err => {
             console.log(err);
@@ -116,6 +120,8 @@ cartOverlay.addEventListener('click', event => {
 
 try {
 
+    console.log(hash);
+
     const goodsList = document.querySelector('.goods__list');
 
     if (!goodsList){
@@ -123,18 +129,6 @@ try {
     }
 
     const createCard = ({ id, preview, cost, brand, name, sizes }) => {
-
-        // 2ой способ переменные і свойтва
-        //const { id, preview, cost, brand, name, sizes } = data;
-
-        /*  1ый способ обозначения переменных объекта и свойств
-        const id = data.id;
-        const preview = data.preview;
-        const cost = data.cost;
-        const brand = data.brand;
-        const name = data.name;
-        const sizes = data.sizes;*/
-
 
         const li = document.createElement('li');
 
@@ -168,7 +162,12 @@ try {
         });
     };
 
-    getGoods(renderGoodsList);
+    window.addEventListener('hashchange', () => {
+        hash = location.hash.substring(1);
+        getGoods(renderGoodsList, hash);
+    });
+
+    getGoods(renderGoodsList, hash);
 
 } catch (err) {
     console.warn(err);
